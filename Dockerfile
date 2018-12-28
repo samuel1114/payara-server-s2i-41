@@ -37,7 +37,7 @@ RUN yum clean all -y
 
 RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
 #COPY ./opt/payara-4.1.2.173.zip /opt/payara-4.1.2.173.zip
-#RUN cd /opt && unzip payara-4.1.2.173.zip
+RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
 
 RUN adduser payara
