@@ -14,7 +14,7 @@ FROM openshift/base-centos7
 #      io.openshift.tags="builder,x.y.z,etc."
 #LABEL io.openshift.s2i.destination="/opt/payara41/glassfish/domains/domain1/autodeploy"
 #LABEL io.openshift.s2i.scripts-url="file:////tmp/SourcetoImage/s2i-payaraserver/s2i/bin"
-
+LABEL io.openshift.s2i.assemble-input-files="/tmp/SourcetoImage/s2i-payaraserver/s2i/bin/profile-management/profile-management-core-ear/target/profile-management-core-ear-1.0.ear"
 # TODO: Install required packages here:
 # RUN yum install -y ... && yum clean all -y
 USER root
