@@ -25,10 +25,10 @@ fi
 echo "---> Building application from source..."
 # TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.i
 ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
-svn checkout --non-interactive --no-auth-cache --trust-server-cert --username samuel.lin --password samuel0918 https://collabnet.kooppi.com:8443/svn/nttca-new-portal/trunk/profile-management
-svn checkout --non-interactive --no-auth-cache --trust-server-cert --username samuel.lin --password samuel0918 https://collabnet.kooppi.com:8443/svn/nttca-new-portal/branches/profile-management-dashboard-branch/profile-management-core-ejb
-cd profile-management
-mvn clean install
-#cp -Rf /tmp/src/. ./
-cp ./profile-management-core-ear/target/profile-management-core-ear-1.0.ear /opt/payara41/glassfish/domains/domain1/autodeploy/
+#svn checkout --non-interactive --no-auth-cache --trust-server-cert --username samuel.lin --password samuel0918 https://collabnet.kooppi.com:8443/svn/nttca-new-portal/trunk/profile-management
+#svn checkout --non-interactive --no-auth-cache --trust-server-cert --username samuel.lin --password samuel0918 https://collabnet.kooppi.com:8443/svn/nttca-new-portal/branches/profile-management-dashboard-branch/profile-management-core-ejb
+#cd profile-management
+#mvn clean install
+cp -Rf /tmp/src/. ./
+cp ./profile-management-core-ear-1.0.ear /opt/payara41/glassfish/domains/domain1/autodeploy/
 ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
