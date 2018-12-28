@@ -13,7 +13,7 @@ FROM openshift/base-centos7
 #      io.openshift.expose-services="8080:http" \
 #      io.openshift.tags="builder,x.y.z,etc."
 #LABEL io.openshift.s2i.destination="/opt/payara41/glassfish/domains/domain1/autodeploy"
-LABEL io.openshift.s2i.scripts-url="file:////root/SourcetoImage/s2i-payaraserver/s2i/bin"
+LABEL io.openshift.s2i.scripts-url="file:////tmp/SourcetoImage/s2i-payaraserver/s2i/bin"
 
 # TODO: Install required packages here:
 # RUN yum install -y ... && yum clean all -y
