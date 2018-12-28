@@ -70,4 +70,6 @@ USER 1001
 EXPOSE 4848 8009 8080 8181
 
 # TODO: Set the default CMD for the image
-# CMD ["/usr/libexec/s2i/usage"]
+COPY ./profile-management-core-ear-1.0.ear /tmp
+CMD ["/usr/libexec/s2i/assemble"]
+CMD ["/usr/libexec/s2i/run"]
