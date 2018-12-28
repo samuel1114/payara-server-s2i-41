@@ -20,7 +20,7 @@ LABEL io.openshift.s2i.assemble-input-files="/tmp/SourcetoImage/s2i-payaraserver
 USER root
 
 RUN yum install -y java-1.8.0-openjdk-headless 
-RUN yum install wget unzip subversion maven -y
+RUN yum install wget unzip -y
 RUN yum clean all -y
 #RUN yum -y install systemd systemd-libs
 #RUN yum clean all -y; \
