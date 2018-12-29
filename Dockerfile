@@ -75,7 +75,7 @@ RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/autodeploy
 EXPOSE 4848 8009 8080 8181
 
 USER payara
-RUN /opt/payara41/bin/asadmin start-domain
+ENTRYPOINT ["/opt/payara41/bin/asadmin", "start-domain"]
 # TODO: Set the default CMD for the image
 #COPY ./profile-management-core-ear-1.0.ear /tmp
 #CMD ["/usr/libexec/s2i/assemble"]
