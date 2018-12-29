@@ -48,11 +48,15 @@ RUN chown -R payara:payara /opt/payara41
 #RUN chmod 644 /etc/systemd/system/payara.service
 #RUN systemctl enable payara
 #RUN systemctl start payara
+USER payara
 RUN /opt/payara41/bin/asadmin start-domain
-RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/logs
-RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/autodeploy
 RUN ls -la /opt/payara41/glassfish/domains/domain1/autodeploy
 RUN /opt/payara41/bin/asadmin stop-domain
+
+USER root
+RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/logs
+RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/autodeploy
+
 #RUN curl http://localhost:4848
 # TODO (optional): Copy the builder files into /opt/app-root
 # COPY ./<builder_folder>/ /opt/app-root/
