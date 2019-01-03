@@ -30,7 +30,7 @@ RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
 
 RUN adduser payara
-RUN chown -R payara:payara /opt/payara41
+RUN chown -R payara:payara /opt
 
 # set credentials to admin/admin 
 ENV ADMIN_USER admin
