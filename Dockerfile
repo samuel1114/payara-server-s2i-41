@@ -32,13 +32,13 @@ RUN cd /opt && rm -rf payara-4.1.2.173.zip
 RUN adduser payara
 RUN chown -R payara:payara /opt/payara41
 
-USER payara
-WORKDIR ${PAYARA_PATH}
-
 # set credentials to admin/admin 
 ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara41
 ENV ADMIN_PASSWORD admin
+
+USER payara
+WORKDIR ${PAYARA_PATH}
 
 RUN echo 'AS_ADMIN_PASSWORD=\n\
 AS_ADMIN_NEWPASSWORD='${ADMIN_PASSWORD}'\n\
