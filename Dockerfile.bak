@@ -15,80 +15,68 @@ FROM openshift/base-centos7
 #LABEL io.openshift.s2i.destination="/opt/payara41/glassfish/domains/domain1/autodeploy"
 #LABEL io.openshift.s2i.scripts-url="file:////tmp/SourcetoImage/s2i-payaraserver/s2i/bin"
 #LABEL io.openshift.s2i.assemble-input-files="/tmp/SourcetoImage/s2i-payaraserver/s2i/bin/profile-management/profile-management-core-ear/target/profile-management-core-ear-1.0.ear"
-
-
 # TODO: Install required packages here:
-
+# RUN yum install -y ... && yum clean all -y
 USER root
 
 RUN yum install -y java-1.8.0-openjdk-headless 
 RUN yum install wget unzip -y
 RUN yum clean all -y
+#RUN yum -y install systemd systemd-libs
+#RUN yum clean all -y; \
+#(cd /lib/systemd/system/sysinit.target.wants/; for i in *; \
+#do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+#rm -f /lib/systemd/system/multi-user.target.wants/*;\
+#rm -f /etc/systemd/system/*.wants/*;\
+#rm -f /lib/systemd/system/local-fs.target.wants/*; \
+#rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+#rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+#rm -f /lib/systemd/system/basic.target.wants/*;\
+#rm -f /lib/systemd/system/anaconda.target.wants/*;
+#VOLUME [ "/sys/fs/cgroup" ]
+#CMD ["/usr/sbin/init"]
 
 RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
+#COPY ./opt/payara-4.1.2.173.zip /opt/payara-4.1.2.173.zip
 RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
 
 RUN adduser payara
 RUN chown -R payara:payara /opt/payara41
 
+#COPY ./etc/systemd/system/payara.service /etc/systemd/system/payara.service
+#RUN chmod 644 /etc/systemd/system/payara.service
+#RUN systemctl enable payara
+#RUN systemctl start payara
 USER payara
-WORKDIR ${PAYARA_PATH}
-
-# set credentials to admin/admin 
-ENV ADMIN_USER admin
-ENV PAYARA_PATH /opt/payara41
-ENV ADMIN_PASSWORD admin
-
-RUN echo 'AS_ADMIN_PASSWORD=\n\
-AS_ADMIN_NEWPASSWORD='${ADMIN_PASSWORD}'\n\
-EOF\n'\
->> /opt/tmpfile
-
-RUN echo 'AS_ADMIN_PASSWORD='${ADMIN_PASSWORD}'\n\
-EOF\n'\
->> /opt/pwdfile
-
-# Start Server in order to generate folders.
-
-# domain1
-RUN ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/tmpfile change-admin-password && \
- ${PAYARA_PATH}/bin/asadmin start-domain domain1 && \
- ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/pwdfile enable-secure-admin && \
- ${PAYARA_PATH}/bin/asadmin stop-domain domain1 && \
- rm -rf ${PAYARA_PATH}/glassfish/domains/domain1/osgi-cache
-
-#USER payara
-#RUN /opt/payara41/bin/asadmin start-domain
-#RUN ls -la /opt/payara41/glassfish/domains/domain1/autodeploy
-#RUN /opt/payara41/bin/asadmin stop-domain
-
-# cleanup
-RUN rm /opt/tmpfile
-
-ENV PAYARA_DOMAIN domain1
-ENV DEPLOY_DIR ${PAYARA_PATH}/deployments
-ENV AUTODEPLOY_DIR ${PAYARA_PATH}/glassfish/domains/${PAYARA_DOMAIN}/autodeploy
-
+RUN /opt/payara41/bin/asadmin start-domain
+RUN ls -la /opt/payara41/glassfish/domains/domain1/autodeploy
+RUN /opt/payara41/bin/asadmin stop-domain
 
 USER root
 RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/logs
 RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/autodeploy
 
+#RUN curl http://localhost:4848
 # TODO (optional): Copy the builder files into /opt/app-root
 # COPY ./<builder_folder>/ /opt/app-root/
 
 # TODO: Copy the S2I scripts to /usr/libexec/s2i, since openshift/base-centos7 image
 # sets io.openshift.s2i.scripts-url label that way, or update that label
-# COPY ./s2i/bin/ /usr/libexec/s2i
+#COPY ./s2i/bin/ /usr/libexec/s2i
 
 # TODO: Drop the root user and make the content of /opt/app-root owned by user 1001
-RUN chown -R 1001:1001 /opt/app-root
+#RUN chown -R 1001:1001 /opt/app-root
 
 # This default user is created in the openshift/base-centos7 image
-USER 1001
+#USER 1001
 
 # TODO: Set the default port for applications built using this image
 EXPOSE 4848 8009 8080 8181
 
-
+USER payara
+ENTRYPOINT ["/opt/payara41/bin/asadmin", "start-domain"]
+# TODO: Set the default CMD for the image
+#COPY ./profile-management-core-ear-1.0.ear /tmp
+#CMD ["/usr/libexec/s2i/assemble"]
+#CMD ["/usr/libexec/s2i/run"]
