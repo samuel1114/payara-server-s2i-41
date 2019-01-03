@@ -26,6 +26,7 @@ RUN yum install wget unzip -y
 RUN yum clean all -y
 
 RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
+#COPY ./payara-4.1.2.173.zip /opt/payara-4.1.2.173.zip
 RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
 
@@ -40,14 +41,8 @@ ENV ADMIN_PASSWORD admin
 USER payara
 WORKDIR ${PAYARA_PATH}
 
-RUN echo 'AS_ADMIN_PASSWORD=\n\
-AS_ADMIN_NEWPASSWORD='${ADMIN_PASSWORD}'\n\
-EOF\n'\
->> /opt/tmpfile
-
-RUN echo 'AS_ADMIN_PASSWORD='${ADMIN_PASSWORD}'\n\
-EOF\n'\
->> /opt/pwdfile
+COPY ./tmpfile /opt/tmpfile
+COPY ./pwdfile /opt/pwdfile
 
 # Start Server in order to generate folders.
 
@@ -75,12 +70,17 @@ USER root
 RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/logs
 RUN chmod -R 777 /opt/payara41/glassfish/domains/domain1/autodeploy
 
+RUN chgrp -R 0 /opt && \
+    chmod -R g=u /opt
+
+RUN echo "default:x:0:0:default user:/root:/sbin/nologin" >> /etc/passwd
+
 # TODO (optional): Copy the builder files into /opt/app-root
 # COPY ./<builder_folder>/ /opt/app-root/
 
 # TODO: Copy the S2I scripts to /usr/libexec/s2i, since openshift/base-centos7 image
 # sets io.openshift.s2i.scripts-url label that way, or update that label
-# COPY ./s2i/bin/ /usr/libexec/s2i
+COPY ./s2i/bin/ /usr/libexec/s2i
 
 # TODO: Drop the root user and make the content of /opt/app-root owned by user 1001
 RUN chown -R 1001:1001 /opt/app-root
