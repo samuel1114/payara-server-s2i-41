@@ -27,7 +27,7 @@ echo "---> Building application from source..."
 ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
 rm -f /opt/payara41/glassfish/domains/domain1/autodeploy/profile-management-core-ear-1.0.ear
 wget http://192.168.222.214:8888/apk/profile-management-core-ear-1.0.ear -P /opt/payara41/glassfish/domains/domain1/autodeploy/
-cp /tmp/profile-management-core-ear-1.0.ear /opt/payara41/glassfish/domains/domain1/autodeploy/
+#cp /tmp/profile-management-core-ear-1.0.ear /opt/payara41/glassfish/domains/domain1/autodeploy/
 ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
 #ls -la ./
 
