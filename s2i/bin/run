@@ -41,6 +41,10 @@ AS_ADMIN_PATH=/opt/payara41/bin/asadmin
 PASSWORD_FILE="/opt/pwdfile"
 PASSWORD_FILE_ARG="--passwordfile=/opt/pwdfile"
 
+##Add MySQL JDBC
+ADD_JDBC=`"$AS_ADMIN_PATH" add-library /opt/payara41/mysql-connector-java-bin.jar`
+echo $ADD_JDBC
+
 # The following command gets the command line to be executed by start-domain
 # - print the command line to the server with --dry-run, each argument on a separate line
 # - remove -read-string argument
