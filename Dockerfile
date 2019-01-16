@@ -52,7 +52,7 @@ RUN ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/tmpfile 
  ${PAYARA_PATH}/bin/asadmin start-domain domain1 && \
  ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/pwdfile enable-secure-admin && \
  ${PAYARA_PATH}/bin/asadmin stop-domain domain1 && \
- cp ${PAYARA_PATH}/mysql-connector-java-5.1.47-bin.jar ${PAYARA_PATH}/glassfish/domains/domain1/mysql-connector-java-5.1.47-bin.jar && \
+ cp ${PAYARA_PATH}/mysql-connector-java-5.1.47-bin.jar ${PAYARA_PATH}/glassfish/domains/domain1/lib/mysql-connector-java-5.1.47-bin.jar && \
  rm -rf ${PAYARA_PATH}/glassfish/domains/domain1/osgi-cache
 
 #USER payara
