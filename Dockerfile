@@ -29,6 +29,7 @@ RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downlo
 #COPY ./payara-4.1.2.173.zip /opt/payara-4.1.2.173.zip
 RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
+RUN cd /opt/payara41 && wget http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar -O mysql-connector-java-5.1.47-bin.jar
 
 RUN adduser payara
 RUN chown -R payara:payara /opt
