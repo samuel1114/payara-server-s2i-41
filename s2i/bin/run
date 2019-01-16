@@ -51,7 +51,7 @@ PASSWORD_FILE_ARG="--passwordfile=/opt/pwdfile"
 # - surround each line except with parenthesis to allow spaces in paths
 # - remove lines before and after the command line and squash commands on a single line
 
-OUTPUT=`"$AS_ADMIN_PATH" start-domain "$PASSWORD_FILE_ARG" --addLibs /opt/payara41/mysql-connector-java-5.1.47-bin.jar --dry-run --postbootcommandfile /opt/payara41/post-boot-commands.asadmin domain1`
+OUTPUT=`"$AS_ADMIN_PATH" start-domain "$PASSWORD_FILE_ARG" --dry-run --postbootcommandfile /opt/payara41/post-boot-commands.asadmin domain1`
 STATUS=$?
 if [ "$STATUS" -ne 0 ]
   then
