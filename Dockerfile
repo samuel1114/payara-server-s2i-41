@@ -51,7 +51,6 @@ COPY ./pwdfile /opt/pwdfile
 RUN ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/tmpfile change-admin-password && \
  ${PAYARA_PATH}/bin/asadmin start-domain domain1 && \
  ${PAYARA_PATH}/bin/asadmin --user ${ADMIN_USER} --passwordfile=/opt/pwdfile enable-secure-admin && \
- ${PAYARA_PATH}/bin/asadmin add-library /opt/payara41/mysql-connector-java-5.1.47-bin.jar && \
  ${PAYARA_PATH}/bin/asadmin stop-domain domain1 && \
  rm -rf ${PAYARA_PATH}/glassfish/domains/domain1/osgi-cache
 
