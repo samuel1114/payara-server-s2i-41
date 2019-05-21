@@ -22,7 +22,7 @@ FROM openshift/base-centos7
 USER root
 
 RUN yum install wget unzip -y 
-RUN yum install java-1.8.0-amazon-corretto-devel
+RUN yum install java-1.8.0-amazon-corretto-devel -y
 RUN java -version
 RUN yum clean all -y
 
