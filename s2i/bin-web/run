@@ -1,0 +1,76 @@
+#!/bin/bash -e
+#
+# S2I run script for the 'payara-server4' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+##Building application from source
+#echo "---> Building application from source..."
+# TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.i
+#ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
+#rm -f /opt/payara41/glassfish/domains/domain1/autodeploy/profile-management-core-ear-1.0.ear
+#wget http://192.168.222.214:8888/apk/profile-management-core-ear-1.0.ear -P /opt/payara41/glassfish/domains/domain1/autodeploy/
+#cp /tmp/profile-management-core-ear-1.0.ear /opt/payara41/glassfish/domains/domain1/autodeploy/
+#ls -la /opt/payara41/glassfish/domains/domain1/autodeploy/
+#ls -la ./
+
+##generate_deploy_commands.sh
+POSTBOOT_COMMANDS=/opt/payara41/post-boot-commands.asadmin
+DEPLOY_DIR=/opt/payara41/deployments
+
+if [ x$1 != x ]
+  then
+    DEPLOY_OPTS="$*"
+fi
+
+echo '# deployments after boot' >> $POSTBOOT_COMMANDS
+for deployment in "${DEPLOY_DIR}"/*
+  do
+    echo "deploy --force --enabled=true $DEPLOY_OPTS $deployment" >> $POSTBOOT_COMMANDS
+done
+
+echo "create-jdbc-connection-pool --datasourceclassname=com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype=javax.sql.DataSource --steadypoolsize=10 --maxpoolsize=32 --maxwait=60000 --poolresize=5 --idletimeout=300 --statementtimeout=10 --maxconnectionusagecount=2500 --statementcachesize=25 --property=serverName=192.168.12.244:portNumber=3306:databaseName=profile_mgmt:user=root:password=1q0p2w9o3e8i4r7u5t6y:useLegacyDayTimeCode=false:serverTimeZone=UTC:useUnicode=true:useSSL=false:character_set_server=utf8mb4:characterEncoding=utf8 newportalPool" >> $POSTBOOT_COMMANDS
+
+echo "create-jdbc-resource --connectionpoolid=newportalPool --enabled=true jdbc/ProfileManagement" >> $POSTBOOT_COMMANDS
+
+##startInForeground.sh
+AS_ADMIN_PATH=/opt/payara41/bin/asadmin
+PASSWORD_FILE="/opt/pwdfile"
+PASSWORD_FILE_ARG="--passwordfile=/opt/pwdfile"
+
+# The following command gets the command line to be executed by start-domain
+# - print the command line to the server with --dry-run, each argument on a separate line
+# - remove -read-string argument
+# - surround each line except with parenthesis to allow spaces in paths
+# - remove lines before and after the command line and squash commands on a single line
+
+OUTPUT=`"$AS_ADMIN_PATH" start-domain "$PASSWORD_FILE_ARG" --dry-run --postbootcommandfile /opt/payara41/post-boot-commands.asadmin domain1`
+STATUS=$?
+if [ "$STATUS" -ne 0 ]
+  then
+    echo ERROR: $OUTPUT >&2
+    exit 1
+fi
+
+COMMAND=`echo "$OUTPUT" | sed -n -e '2,/^$/p'`
+
+echo Executing Payara Server with the following command line:
+echo $COMMAND
+echo
+
+# Run the server in foreground - read master password from variable or file or use the default "changeit" password
+
+set +x
+if test "$AS_ADMIN_MASTERPASSWORD"x = x -a -f "$PASSWORD_FILE"
+  then
+    source "$PASSWORD_FILE"
+fi
+if test "$AS_ADMIN_MASTERPASSWORD"x = x
+  then
+    AS_ADMIN_MASTERPASSWORD=changeit
+fi
+echo "AS_ADMIN_MASTERPASSWORD=$AS_ADMIN_MASTERPASSWORD" > /tmp/masterpwdfile
+exec $COMMAND < /tmp/masterpwdfile
