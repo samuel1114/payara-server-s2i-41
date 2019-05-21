@@ -22,7 +22,8 @@ FROM openshift/base-centos7
 USER root
 
 RUN yum install wget unzip -y
-RUN cd /opt && wget https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm && yum localinstall java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm && java -version
+RUN cd /opt && wget https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm && yum localinstall java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm
+RUN java -version
 RUN yum clean all -y
 
 RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
