@@ -23,7 +23,7 @@ USER root
 
 RUN yum install wget unzip -y
 RUN cd /opt && wget https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm 
-RUN yum localinstall java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm
+RUN yum localinstall /opt/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm
 RUN java -version
 RUN yum clean all -y
 
