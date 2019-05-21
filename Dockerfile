@@ -21,8 +21,8 @@ FROM openshift/base-centos7
 
 USER root
 
-RUN yum install -y java-1.8.0-openjdk-headless 
 RUN yum install wget unzip -y
+RUN cd /opt && https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm && yum localinstall java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm && java -version
 RUN yum clean all -y
 
 RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
@@ -30,6 +30,7 @@ RUN cd /opt && wget https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downlo
 RUN cd /opt && unzip payara-4.1.2.173.zip
 RUN cd /opt && rm -rf payara-4.1.2.173.zip
 RUN cd /opt/payara41 && wget http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar -O mysql-connector-java-5.1.47-bin.jar
+#COPY ./mysql-connector-java-5.1.47-bin.jar /opt/payara41/mysql-connector-java-5.1.47-bin.jar
 
 RUN adduser payara
 RUN chown -R payara:payara /opt
