@@ -34,7 +34,7 @@ done
 
 echo "create-jdbc-connection-pool --datasourceclassname=com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype=javax.sql.DataSource --steadypoolsize=10 --maxpoolsize=32 --maxwait=60000 --poolresize=5 --idletimeout=300 --statementtimeout=10 --maxconnectionusagecount=2500 --statementcachesize=25 --property=serverName=10.128.5.27:portNumber=3306:databaseName=profile_mgmt:user=kooppi:password=kl,m2we3:useLegacyDayTimeCode=false:serverTimeZone=UTC:useUnicode=true:useSSL=false:character_set_server=utf8mb4:characterEncoding=utf8 ProfileMgmtPool" >> $POSTBOOT_COMMANDS
 
-echo "create-jdbc-resource --connectionpoolid=newportalPool --enabled=true jdbc/ProfileManagement" >> $POSTBOOT_COMMANDS
+echo "create-jdbc-resource --connectionpoolid=ProfileMgmtPool --enabled=true 	jdbc/ProfileManagement" >> $POSTBOOT_COMMANDS
 
 ##startInForeground.sh
 AS_ADMIN_PATH=/opt/payara41/bin/asadmin
