@@ -36,7 +36,7 @@ echo "create-jdbc-connection-pool --datasourceclassname=com.mysql.jdbc.jdbc2.opt
 
 echo "create-jdbc-resource --connectionpoolid=ProfileMgmtPool --enabled=true 	jdbc/ProfileManagement" >> $POSTBOOT_COMMANDS
 
-echo "create-custom-resource --restype=java.util.Properties --factoryclass=org.glassfish.resources.custom.factory.PropertiesFactory --property=ldapUseSSL=false:ldapAuthnBaseDn=dc\=openldap,dc\=vc01-tkolab.pd.ntt.hk:ldapAuthnManagerDN=cn\=Manager,dc\=openldap,dc\=vc01-tkolab.pd.ntt.hk:ldapAuthnManagerPassword=P@ssword123:ldapUrl=ldap\://172.16.5.20\:389 ldap/ProfileManagement" >> $POSTBOOT_COMMANDS
+echo "create-custom-resource --restype=java.util.Properties --factoryclass=org.glassfish.resources.custom.factory.PropertiesFactory --property=ldapUseSSL=false:connectTimeout=20000:ldapAuthnBaseDn=dc\=openldap,dc\=vc01-tkolab.pd.ntt.hk:ldapAuthnManagerDN=cn\=Manager,dc\=openldap,dc\=vc01-tkolab.pd.ntt.hk:ldapAuthnManagerPassword=P@ssword123:ldapUrl=ldap\://172.16.5.20\:389 ldap/ProfileManagement" >> $POSTBOOT_COMMANDS
 
 ##startInForeground.sh
 AS_ADMIN_PATH=/opt/payara41/bin/asadmin
